@@ -1,5 +1,5 @@
 contract TheDAOHardForkOracle {
-    address constant WitdrawDAO = 0xbf4ed7b27f1d666546e30d74d50d173d20bca754;
+    address constant WithdrawDAO = 0xbf4ed7b27f1d666546e30d74d50d173d20bca754;
     address constant DarkDAO = 0x304a554a310c7e546dfe434669c62820b7d83490;
 
     // public, so accessors available
