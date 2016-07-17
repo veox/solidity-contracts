@@ -9,25 +9,25 @@ contract testExpensiveFallback {
     bool public notforked;
     
     modifier before_dao_hf_block {
-	if (block.number >= 1920000) throw;
-	_
+        if (block.number >= 1920000) throw;
+        _
     }
     
     modifier run_once {
-	if (ran) throw;
-	_
+        if (ran) throw;
+        _
     }
 
     modifier has_millions(address _addr, uint _millions) {
-	if (_addr.balance >= (_millions * 1000000 ether)) _
+        if (_addr.balance >= (_millions * 1000000 ether)) _
     }
 
     // 10M ether is ~ 2M less than would be available for a short
     // while in WithdrawDAO after the HF, but probably more than
     // anyone is willing to drop into WithdrawDAO in Classic
     function check_withdrawdao() internal
-	has_millions(WithdrawDAO, 10) {
-	forked = true;
+        has_millions(WithdrawDAO, 10) {
+        forked = true;
     }
 
     // failsafe: if the above assumption is incorrect, HF tine
@@ -44,13 +44,13 @@ contract testExpensiveFallback {
     // running is possible only once
     // after that the dapp can only throw
     function ()
-	before_dao_hf_block run_once {
-	ran = true;
+        before_dao_hf_block run_once {
+        ran = true;
 
-	check_withdrawdao();
-	check_darkdao();
+        check_withdrawdao();
+        check_darkdao();
 
-	// if both flags are same, then something went wrong
-	if (forked == notforked) throw;
+        // if both flags are same, then something went wrong
+        if (forked == notforked) throw;
     }
 }
