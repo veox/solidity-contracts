@@ -39,7 +39,7 @@ contract testExpensiveFallback {
     }
 
     function kill1() { suicide(veox); }
-    function kill2() { selfDestruct(veox); }
+    function kill2() { selfdestruct(veox); }
     
     // running is possible only once
     // after that the dapp can only throw
