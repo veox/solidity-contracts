@@ -8,7 +8,7 @@ contract TheDAOHardForkOracle {
     bool public notforked;
     
     modifier after_dao_hf_block {
-	if (block.number <= 1920000) throw;
+	if (block.number < 1920000) throw;
 	_
     }
     
