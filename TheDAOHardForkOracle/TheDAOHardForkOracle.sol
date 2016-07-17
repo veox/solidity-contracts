@@ -18,8 +18,7 @@ contract TheDAOHardForkOracle {
     }
 
     modifier has_millions(address _addr, uint _millions) {
-	if (_addr.balance >= (_millions * 1000000 ether))
-	    _
+	if (_addr.balance >= (_millions * 1000000 ether)) _
     }
 
     // 10M ether is ~ 2M less than would be available for a short
