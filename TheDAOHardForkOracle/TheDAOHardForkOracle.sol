@@ -17,26 +17,37 @@ contract TheDAOHardForkOracle {
 	_
     }
 
+    modifier has_millions(address _addr, uint _millions) {
+	if (_addr.balance >= (_millions * 1000000 ether))
+	    _
+    }
+
+    // 10M ether is ~ 2M less than would be available for a short
+    // while in WithdrawDAO after the HF, but probably more than
+    // anyone is willing to drop into WithdrawDAO in Classic
+    function check_withdrawdao() internal
+	has_millions(WithdrawDAO, 10) {
+	forked = true;
+    }
+
+    // failsafe: if the above assumption is incorrect, HF tine
+    // won't have balance in DarkDAO anyway, and Classic has a
+    // sliver of time before DarkDAO split happens
+    function check_darkdao() internal
+        has_millions(DarkDAO, 3) {
+        notforked = true;
+    }
+
     // running is possible only once
     // after that the dapp can only throw
     function ()
 	after_dao_hf_block run_once {
 	ran = true;
 
-	// 10M ether is ~ 2M less than would be available for a short
-	// while in WithdrawDAO after the HF, but probably more than
-	// anyone is willing to drop into WithdrawDAO in Classic
-	// -- READABILITY -----> 10*000*000 <-- 10 million
-	if (WithdrawDAO.balance >= 10000000 ether)
-	    forked = true;
+	check_withdrawdao();
+	check_darkdao();
 
-	// failsafe: if the above assumption is incorrect, HF tine
-	// won't have balance in DarkDAO anyway, and Classic has a
-	// sliver of time before DarkDAO split happens
-	// -- READABILITY -> 3*000*000 <-------- 3 million
-	if (DarkDAO.balance >= 3000000 ether)
-	    notforked = true;
-
-	// if both flags are true, then something went wrong
+	// if both flags are same, then something went wrong
+	if (forked == notforked) throw;
     }
 }
