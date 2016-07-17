@@ -24,6 +24,7 @@ contract daoHardForkOracle {
 	// 10M ether is ~ 2M less than would be available for a short
 	// while in WithdrawDAO after the HF, but probably more than
 	// anyone is willing to drop into WithdrawDAO in Classic
-	if (WithdrawDAO.balance >= 10*000*000 ether) forked = true;
+	// ----- READABILITY --> 10*000*000 <-- 10 million
+	if (WithdrawDAO.balance >= 10000000 ether) forked = true;
     }
 }
