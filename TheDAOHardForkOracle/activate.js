@@ -9,53 +9,53 @@
 // FIXME: `r` not used, `e` usage bad
 var forkfilter_send_and_verify = function(e,r) {
     if (e) {
-	console.log(e);
-	return;
+        console.log(e);
+        return;
     }
-    
+
     var forkblock = 1920000;
     var senderaddr = eth.accounts[4];  // TODO: change if needed
     var oracleaddr = "0xe8e506306ddb78ee38c9b0d86c257bd97c2536b3";
     var oracleabi = [
 	{
-	    "constant":true,
-	    "inputs":[],
-	    "name":"ran",
-	    "outputs":[{"name":"","type":"bool"}],
-	    "type":"function"
-	},
-	{
-	    "constant":true,
-	    "inputs":[],
-	    "name":"forked",
-	    "outputs":[{"name":"","type":"bool"}],
-	    "type":"function"
-	},
-	{
-	    "constant":true,
-	    "inputs":[],
-	    "name":"notforked",
-	    "outputs":[{"name":"","type":"bool"}],
-	    "type":"function"
-	};
+            "constant":true,
+            "inputs":[],
+            "name":"ran",
+            "outputs":[{"name":"","type":"bool"}],
+            "type":"function"
+        },
+        {
+            "constant":true,
+            "inputs":[],
+            "name":"forked",
+            "outputs":[{"name":"","type":"bool"}],
+            "type":"function"
+        },
+        {
+            "constant":true,
+            "inputs":[],
+            "name":"notforked",
+            "outputs":[{"name":"","type":"bool"}],
+            "type":"function"
+        };
     ];
 
     var oracle = eth.contract(oracleabi).at(oracleaddr);
 
     if (eth.blockNumber == forkblock) {	
-	console.log("========= BRACE FOR IMPACT =========");
-	eth.sendTransaction({from: sender, to: oracleaddr, value: "0"});
+        console.log("========= BRACE FOR IMPACT =========");
+        eth.sendTransaction({from: sender, to: oracleaddr, value: "0"});
     }
 
     if (eth.blockNumber == forkblock+1) {
-	var ran = oracle.ran();
-	var forked = oracle.forked();
+        var ran = oracle.ran();
+        var forked = oracle.forked();
 
-	if (!ran) {
-	    
-	}
-	else {
-	    
-	}
+        if (!ran) {
+            console.log("");
+        }
+        else {
+            console.log("");
+        }
     }
 });
