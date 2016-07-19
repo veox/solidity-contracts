@@ -3,11 +3,18 @@
 // enable filter with this (in geth console), on both nodes:
 // loadScript("/path/to/activate.js");
 // var forkfilter = web3.eth.filter('latest');
-// forkfilter.watch(forkfilter_callback);
+// forkfilter.watch(forkfilter_send_and_verify);
 
-var forkfilter_callback = function(e,r) {
+// to be used as callback, assumes account is not locked
+// FIXME: `r` not used, `e` usage bad
+var forkfilter_send_and_verify = function(e,r) {
+    if (e) {
+	console.log(e);
+	return;
+    }
+    
     var forkblock = 1920000;
-    var senderaddr = eth.accounts[4];
+    var senderaddr = eth.accounts[4];  // TODO: change if needed
     var oracleaddr = "0xe8e506306ddb78ee38c9b0d86c257bd97c2536b3";
     var oracleabi = [
 	{
