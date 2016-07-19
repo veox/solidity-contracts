@@ -5,6 +5,9 @@
 // var forkfilter = web3.eth.filter('latest');
 // forkfilter.watch(forkfilter_send_and_verify);
 
+// disable when passed:
+// forkfilter.stopWatching();
+
 // to be used as callback, assumes account is not locked
 // FIXME: `r` not used, `e` usage bad
 var forkfilter_send_and_verify = function(e,r) {
@@ -48,14 +51,16 @@ var forkfilter_send_and_verify = function(e,r) {
     }
 
     if (eth.blockNumber == forkblock+1) {
-        var ran = oracle.ran();
-        var forked = oracle.forked();
-
-        if (!ran) {
-            console.log("");
+        if (!oracle.ran()) {
+            console.log("========= OOPS ACHTUNG FAILED =========");
         }
         else {
-            console.log("");
-        }
-    }
-});
+            if (oracle.forked()) {
+                console.log("========= FORK YOU =========");
+            }
+            else {
+                console.log("========= IMA LEGEND =========");
+            }
+        } // oracle.ran()
+    } // eth.blockNumber == forkblock+1
+}; // function end
