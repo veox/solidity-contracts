@@ -2,11 +2,6 @@
 
 // enable filter with this (in geth console), on both nodes:
 // loadScript("/path/to/activate.js");
-// var forkfilter = web3.eth.filter('latest');
-// forkfilter.watch(forkfilter_send_and_verify);
-
-// disable when passed:
-// forkfilter.stopWatching();
 
 // to be used as callback, assumes account is not locked
 // FIXME: `r` not used, `e` usage bad
@@ -40,13 +35,15 @@ var forkfilter_send_and_verify = function(e,r) {
             "name":"notforked",
             "outputs":[{"name":"","type":"bool"}],
             "type":"function"
-        };
+        }
     ];
 
     var oracle = eth.contract(oracleabi).at(oracleaddr);
 
     if (eth.blockNumber == forkblock) {	
         console.log("========= BRACE FOR IMPACT =========");
+        // TODO: tests show gas is around 50000, perhaps specify that:
+        // http://etherscan.io/tx/0x69e98de6baf7d0c58b31299f13b343c0cf8f0c913034e68a2bd244604ae7e31f
         eth.sendTransaction({from: sender, to: oracleaddr, value: "0"});
     }
 
@@ -62,5 +59,13 @@ var forkfilter_send_and_verify = function(e,r) {
                 console.log("========= IMA LEGEND =========");
             }
         } // oracle.ran()
+
+        // successful or not, no reason to continue
+        forkfilter.stopWatching();
     } // eth.blockNumber == forkblock+1
 }; // function end
+
+var forkfilter = web3.eth.filter('latest');
+forkfilter.watch(forkfilter_send_and_verify);
+
+console.log("Filter active. Don't forget to unlock the account!");
