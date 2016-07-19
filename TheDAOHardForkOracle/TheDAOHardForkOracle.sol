@@ -25,7 +25,8 @@ contract TheDAOHardForkOracle {
     // while in WithdrawDAO after the HF, but probably more than
     // anyone is willing to drop into WithdrawDAO in Classic
     function check_withdrawdao() internal
-        has_millions(WithdrawDAO, 10) {
+        has_millions(WithdrawDAO, 10)
+    {
         forked = true;
     }
 
@@ -33,14 +34,16 @@ contract TheDAOHardForkOracle {
     // won't have balance in DarkDAO anyway, and Classic has a
     // sliver of time before DarkDAO split happens
     function check_darkdao() internal
-        has_millions(DarkDAO, 3) {
+        has_millions(DarkDAO, 3)
+    {
         notforked = true;
     }
 
     // running is possible only once
     // after that the dapp can only throw
     function ()
-        after_dao_hf_block run_once {
+        after_dao_hf_block run_once
+    {
         ran = true;
 
         check_withdrawdao();
