@@ -48,14 +48,7 @@ contract ReversibleDemo {
         return true;
     }
 
-    function selfDestruct() onlyOwner {
-        selfdestruct(owner);
-    }
-
-    function() {
-        // accept value trasfers, but don't do anything
-        if (msg.value != 0) return;
-
+    function doCall() onlyOwner {
         numcalls++;
 
         // TODO: limit gas?
@@ -69,5 +62,13 @@ contract ReversibleDemo {
             numsuccesses++;
             logCallSucceeded(numcalls, numsuccesses);
         }
+    }
+
+    function selfDestruct() onlyOwner {
+        selfdestruct(owner);
+    }
+
+    function() {
+        // accept value trasfers, but don't do anything
     }
 }
