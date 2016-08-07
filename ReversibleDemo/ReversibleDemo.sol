@@ -1,7 +1,6 @@
 // `interface` would make a nice keyword ;)
 contract TheDaoHardForkOracle {
     // `ran()` manually verified true on both ETH and ETC chains
-    // function ran() constant returns (bool);
     function forked() constant returns (bool);
 }
 
@@ -15,12 +14,12 @@ contract ReversibleDemo {
 
     address owner;
 
+    // needed for "naive" and "oraclized" checks
     address constant withdrawdaoaddr = 0xbf4ed7b27f1d666546e30d74d50d173d20bca754;
     TheDaoHardForkOracle oracle = TheDaoHardForkOracle(0xe8e506306ddb78ee38c9b0d86c257bd97c2536b3);
 
     // meh, not using `indexed`
-    event logCallFailed(uint _numcalls, uint _numfails);
-    event logCallSucceeded(uint _numcalls, uint _numsuccesses);
+    event logCall(uint _numcalls, uint _numfails, uint _numsuccesses);
 
     modifier onlyOwner { if (msg.sender != owner) throw; _ }
     modifier onlyThis { if (msg.sender != this) throw; _ }
@@ -40,11 +39,12 @@ contract ReversibleDemo {
         // three million ----------> 3'000'000
         if (withdrawdaoaddr.balance < 3000000 ether) {
             // intentionally not checking return value
-            owner.send(42 wei);
+            owner.send(42);
             // "reverse" if it's actually the HF chain
             if (oracle.forked()) throw;
         }
 
+        // not exactly a "success": send() could have failed on classic
         return true;
     }
 
@@ -52,16 +52,13 @@ contract ReversibleDemo {
         numcalls++;
 
         // TODO: limit gas?
-        bool ret = this.sendIfNotForked();
-        
-        if (!ret) {
+        if (!this.sendIfNotForked()) {
             numfails++;
-            logCallFailed(numcalls, numfails);
         }
         else {
             numsuccesses++;
-            logCallSucceeded(numcalls, numsuccesses);
         }
+        logCall(numcalls, numfails, numsuccesses);
     }
 
     function selfDestruct() onlyOwner {
