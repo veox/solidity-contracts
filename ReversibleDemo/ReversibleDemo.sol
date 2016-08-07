@@ -18,8 +18,9 @@ contract ReversibleDemo {
     address constant withdrawdaoaddr = 0xbf4ed7b27f1d666546e30d74d50d173d20bca754;
     TheDaoHardForkOracle oracle = TheDaoHardForkOracle(0xe8e506306ddb78ee38c9b0d86c257bd97c2536b3);
 
-    event logCallFailed(); // TODO
-    event logCallSucceeded(); // TODO
+    // meh, not using `indexed`
+    event logCallFailed(uint _numcalls, uint _numfails);
+    event logCallSucceeded(uint _numcalls, uint _numsuccesses);
 
     modifier onlyOwner { if (msg.sender != owner) throw; _ }
     modifier onlyThis { if (msg.sender != this) throw; _ }
@@ -62,11 +63,11 @@ contract ReversibleDemo {
         
         if (!ret) {
             numfails++;
-            logCallFailed();
+            logCallFailed(numcalls, numfails);
         }
         else {
             numsuccesses++;
-            logCallSucceeded();
+            logCallSucceeded(numcalls, numsuccesses);
         }
     }
 }
