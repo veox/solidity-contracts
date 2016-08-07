@@ -22,7 +22,7 @@ contract ReversibleDemo {
     event logCall(uint _numcalls, uint _numfails, uint _numsuccesses);
 
     modifier onlyOwner { if (msg.sender != owner) throw; _ }
-    modifier onlyThis { if (msg.sender != this) throw; _ }
+    modifier onlyThis { if (msg.sender != address(this)) throw; _ }
 
     // constructor (needed to allow termination)
     function ReversibleDemo() {
@@ -51,7 +51,7 @@ contract ReversibleDemo {
     function doCall() onlyOwner {
         numcalls++;
 
-        // TODO: limit gas?
+        // TODO: specify gas?..
         if (!this.sendIfNotForked()) {
             numfails++;
         }
