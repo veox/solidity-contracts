@@ -1,18 +1,18 @@
 // manual deployment cheatsheet
-// replace `demo` and `ReversibleDemo` with sed ;)
+// replace `demo` and `ThisExternalAssembly` with sed ;)
 
 // https://github.com/ethereum/go-ethereum/wiki/Contract-Tutorial
 
-// solc --gas ReversibleDemo.sol
+// solc --gas ThisExternalAssembly.sol
 
 // var owneraddr = "0x04b3faaa7c8127a80eb6d24672cfdaf4aecabbf8";
 // var demo_src = '<paste code>'
 // var demo_compiled = eth.compile.solidity(demo_src)
-// var demo_contract = eth.contract(demo_compiled.ReversibleDemo.info.abiDefinition)
+// var demo_contract = eth.contract(demo_compiled.ThisExternalAssembly.info.abiDefinition)
 
 var demo = demo_contract.new([],
                              {from: owneraddr,
-                              data: demo_compiled.ReversibleDemo.code,
+                              data: demo_compiled.ThisExternalAssembly.code,
                               gas: 500000},
                              function(e, contract){
     if (!e) {
