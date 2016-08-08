@@ -1,6 +1,4 @@
-// run on testnet
-
-contract TestExternalCallAssembly {
+contract ThisExternalAssembly {
     uint public numcalls;
     uint public numcallsinternal;
     uint public numfails;
@@ -14,7 +12,7 @@ contract TestExternalCallAssembly {
     modifier onlyThis { if (msg.sender != address(this)) throw; _ }
 
     // constructor
-    function TestExternalCallAssembly() {
+    function ThisExternalAssembly() {
         owner = msg.sender;
     }
 
