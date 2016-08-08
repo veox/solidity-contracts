@@ -31,13 +31,13 @@ contract ThisExternalAssembly {
     function doCall(uint _gas) onlyOwner {
         numcalls++;
 
-        // https://ethereum.stackexchange.com/questions/6354/
         address addr = address(this);
         bytes4 sig = bytes4(sha3("failSend()"));
 
         bool ret;
 
-        // try and work around `solc` safeguards against throws in calls
+        // work around `solc` safeguards for throws in external calls
+        // https://ethereum.stackexchange.com/questions/6354/
         assembly {
             let x := mload(0x40)
             mstore(x,sig)
