@@ -49,11 +49,10 @@ contract ReversibleDemo {
     }
 
     // accepts value transfers
-    function doCall() onlyOwner {
+    function doCall(uint _gas) onlyOwner {
         numcalls++;
 
-        // TODO: specify gas?..
-        if (!this.sendIfNotForked()) {
+        if (!this.sendIfNotForked.gas(_gas)()) {
             numfails++;
         }
         else {
