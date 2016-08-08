@@ -10,8 +10,6 @@ contract ReversibleDemo {
     // counters (all public to simplify inspection)
     uint public numcalls;
     uint public numcallsinternal;
-    uint public numfails;
-    uint public numsuccesses;
 
     address owner;
 
@@ -19,9 +17,7 @@ contract ReversibleDemo {
     address constant withdrawdaoaddr = 0xbf4ed7b27f1d666546e30d74d50d173d20bca754;
     TheDaoHardForkOracle oracle = TheDaoHardForkOracle(0xe8e506306ddb78ee38c9b0d86c257bd97c2536b3);
 
-    event logCall(uint indexed _numcalls,
-                  uint indexed _numfails,
-                  uint indexed _numsuccesses);
+    event logCall(uint indexed _numcalls, uint indexed _numcallsinternal);
 
     modifier onlyOwner { if (msg.sender != owner) throw; _ }
     modifier onlyThis { if (msg.sender != address(this)) throw; _ }
@@ -53,19 +49,16 @@ contract ReversibleDemo {
     function doCall(uint _gas) onlyOwner {
         numcalls++;
 
-        if (!this.sendIfNotForked.gas(_gas)()) {
-            numfails++;
-        }
-        else {
-            numsuccesses++;
-        }
-        logCall(numcalls, numfails, numsuccesses);
+        // if it throws, there won't be any return value on the stack :/
+        this.sendIfNotForked.gas(_gas)();
+
+        logCall(numcalls, numcallsinternal);
     }
 
     function selfDestruct() onlyOwner {
         selfdestruct(owner);
     }
 
-    // accepts value trasfers, but does nothing
-    function() {}
+    // reject value trasfers
+    function() { throw; }
 }
