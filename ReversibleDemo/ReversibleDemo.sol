@@ -4,7 +4,8 @@ contract TheDaoHardForkOracle {
     function forked() constant returns (bool);
 }
 
-// Demostrates calling own function in a "reversible" manner.
+// demostrates calling own function in a "reversible" manner
+/* important lines are marked by multi-line comments */
 contract ReversibleDemo {
     // counters (all public to simplify inspection)
     uint public numcalls;
@@ -18,29 +19,28 @@ contract ReversibleDemo {
     address constant withdrawdaoaddr = 0xbf4ed7b27f1d666546e30d74d50d173d20bca754;
     TheDaoHardForkOracle oracle = TheDaoHardForkOracle(0xe8e506306ddb78ee38c9b0d86c257bd97c2536b3);
 
-    // meh, not using `indexed`
-    event logCall(uint _numcalls, uint _numfails, uint _numsuccesses);
+    event logCall(uint indexed _numcalls,
+                  uint indexed _numfails,
+                  uint indexed _numsuccesses);
 
     modifier onlyOwner { if (msg.sender != owner) throw; _ }
     modifier onlyThis { if (msg.sender != address(this)) throw; _ }
 
-    // constructor (needed to allow termination)
-    function ReversibleDemo() {
-        owner = msg.sender;
-    }
+    // constructor (setting `owner` allows later termination)
+    function ReversibleDemo() { owner = msg.sender; }
 
-    // external: increments stack height, even if invoked from same dapp
-    // onlyThis: not allowed by other accounts (external or dapps)
+    /* external: increments stack height */
+    /* onlyThis: prevent actual external calling */
     function sendIfNotForked() external onlyThis returns (bool) {
         numcallsinternal++;
 
-        // naive check for "is this the classic chain"
+        /* naive check for "is this the classic chain" */
         // guaranteed `true`: enough has been withdrawn already
-        // three million ----------> 3'000'000
+        //     three million ------> 3'000'000
         if (withdrawdaoaddr.balance < 3000000 ether) {
-            // intentionally not checking return value
+            /* intentionally not checking return value */
             owner.send(42);
-            // "reverse" if it's actually the HF chain
+            /* "reverse" if it's actually the HF chain */
             if (oracle.forked()) throw;
         }
 
@@ -48,6 +48,7 @@ contract ReversibleDemo {
         return true;
     }
 
+    // accepts value transfers
     function doCall() onlyOwner {
         numcalls++;
 
@@ -65,7 +66,6 @@ contract ReversibleDemo {
         selfdestruct(owner);
     }
 
-    function() {
-        // accept value trasfers, but don't do anything
-    }
+    // accept value trasfers, but don't do anything
+    function() {}
 }
