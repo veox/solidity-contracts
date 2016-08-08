@@ -19,13 +19,14 @@ contract TestExternalCallAssembly {
     }
 
     function failSend() external onlyThis returns (bool) {
+        // storage change + nested external call
         numcallsinternal++;
         owner.send(42);
 
-        // fake
+        // placeholder for state checks
         if (true) throw;
 
-        // never happens
+        // never happens in this case
         return true;
     }
     
@@ -40,17 +41,17 @@ contract TestExternalCallAssembly {
 
         // try and work around `solc` safeguards against throws in calls
         assembly {
-            let x := mload(0x40)   //Find empty storage location using "free memory pointer"
-            mstore(x,sig) //Place signature at begining of empty storage
+            let x := mload(0x40)
+            mstore(x,sig)
 
             ret := call(
                 _gas, // gas
                 addr, // to addr
                 0,    // value (none)
-                x,    //Inputs are stored at location x
-                0x4, // input size - just the sig
-                x,    //Store output over input (saves space)
-                0x1) // bool output (1 byte)
+                x,    // Inputs are stored at location x
+                0x4,  // input size - just the sig
+                x,    // Store output over input (saves space)
+                0x1)  // bool output (1 byte)
 
             //ret := mload(x) // no return value ever written :/
             mstore(0x40,add(x,0x4)) // Set storage pointer to empty space
