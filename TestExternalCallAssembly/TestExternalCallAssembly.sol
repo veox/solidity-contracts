@@ -3,6 +3,8 @@
 contract TestExternalCallAssembly {
     uint public numcalls;
     uint public numcallsinternal;
+    uint public numfails;
+    uint public numsuccesses;
     
     address owner;
 
@@ -23,6 +25,7 @@ contract TestExternalCallAssembly {
         // fake
         if (true) throw;
 
+        // never happens
         return true;
     }
     
@@ -33,7 +36,28 @@ contract TestExternalCallAssembly {
         address addr = address(this);
         bytes4 sig = bytes4(sha3("failSend()"));
 
-        this.sendIfNotForked.gas(_gas)();
+        bool ret;
+
+        // try and work around `solc` safeguards against throws in calls
+        assembly {
+            let x := mload(0x40)   //Find empty storage location using "free memory pointer"
+            mstore(x,sig) //Place signature at begining of empty storage
+
+            ret := call(
+                _gas, // gas
+                addr, // to addr
+                0,    // value (none)
+                x,    //Inputs are stored at location x
+                0x4, // input size - just the sig
+                x,    //Store output over input (saves space)
+                0x1) // bool output (1 byte)
+
+            //ret := mload(x) // no return value ever written :/
+            mstore(0x40,add(x,0x4)) // Set storage pointer to empty space
+        }
+
+        if (ret) { numsuccesses++; }
+        else { numfails++; }
 
         logCall(numcalls, numcallsinternal);
     }
