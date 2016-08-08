@@ -1,3 +1,10 @@
+/* This dapp doesn't work due to the fact that `solc` wraps external
+   calls in "throw protection". If a throw occurs, 0 is pushed to the
+   stack, which the parent of the failing call can check for, and
+   throw, too.
+
+   See `TestExternalCallAssembly` on how this can be sidestepped. */
+
 // `interface` would make a nice keyword ;)
 contract TheDaoHardForkOracle {
     // `ran()` manually verified true on both ETH and ETC chains
