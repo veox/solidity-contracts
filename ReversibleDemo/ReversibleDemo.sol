@@ -66,6 +66,6 @@ contract ReversibleDemo {
         selfdestruct(owner);
     }
 
-    // accept value trasfers, but don't do anything
+    // accepts value trasfers, but does nothing
     function() {}
 }
