@@ -40,9 +40,10 @@ contract ReversibleDemo {
         if (withdrawdaoaddr.balance < 3000000 ether) {
             /* intentionally not checking return value */
             owner.send(42);
-            /* "reverse" if it's actually the HF chain */
-            if (oracle.forked()) throw;
         }
+
+        /* "reverse" if it's actually the HF chain */
+        if (oracle.forked()) throw;
 
         // not exactly a "success": send() could have failed on classic
         return true;
