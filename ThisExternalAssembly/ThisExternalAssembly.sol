@@ -1,12 +1,12 @@
 contract ThisExternalAssembly {
-    uint public numcalls;
-    uint public numcallsinternal;
-    uint public numfails;
-    uint public numsuccesses;
+    uint8 public numcalls;
+    uint8 public numcallsinternal;
+    uint8 public numfails;
+    uint8 public numsuccesses;
     
     address owner;
 
-    event logCall(uint indexed _numcalls, uint indexed _numcallsinternal);
+    event logCall(uint8 indexed _numcalls, uint8 indexed _numcallsinternal);
     
     modifier onlyOwner { if (msg.sender != owner) throw; _ }
     modifier onlyThis { if (msg.sender != address(this)) throw; _ }
