@@ -1,4 +1,4 @@
-SOURCES := 1-Empty.sol 2-Fallback.sol 3-FallbackReturn.sol 4-FallbackReturnFalse.sol
+SOURCES := 1-Empty.sol 2-Fallback.sol 3-FallbackReturn.sol 4-FallbackReturnFalse.sol 5-FallbackThrow.sol
 
 .PHONY: asm bin clean
 
