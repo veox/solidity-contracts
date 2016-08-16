@@ -1,0 +1,5 @@
+contract FallbackReturn {
+    function () {
+        return;
+    }
+}
