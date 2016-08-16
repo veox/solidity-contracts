@@ -1,5 +1,5 @@
 contract FallbackReturnFalse {
-    function () {
+    function () returns (bool) {
         return false;
     }
 }
