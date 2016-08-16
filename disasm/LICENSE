@@ -1,5 +1,5 @@
 *.sol are so bare that any kind of licensing is absurd.
 
-*.disasm are produced by Nick Johnson's `evmdis`, not sure what applies
-here. Just in case it's up to me in your jurisdiction, I hereby place
-them in public domain.
+*.asm are produced by `solc` compiler, not sure what applies here. Just
+in case it's up to me in your jurisdiction, I hereby place them in
+public domain.
