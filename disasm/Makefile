@@ -7,7 +7,9 @@ asm: $(SOURCES:.sol=.asm)
 bin: $(SOURCES:.sol=.bin) $(SOURCES:.sol=.bin+opt)
 
 clean:
-	rm -f *.bin *.bin+opt
+	rm -f *.asm *.bin *.bin-runtime *.bin+opt *.disasm
+
+disasm: $(SOURCES:.sol=.disasm)
 
 %.asm: %.sol
 	solc --asm $< > $@
@@ -17,3 +19,8 @@ clean:
 
 %.bin+opt: %.sol
 	solc --bin --optimize $< > $@
+
+%.disasm: %.sol
+	solc --bin-runtime -o `pwd` $<
+	cat `ls *.bin-runtime` | evmdis > $@
+	rm *.bin-runtime
