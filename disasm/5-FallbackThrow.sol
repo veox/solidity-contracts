@@ -1,5 +1,5 @@
 contract FallbackThrow {
-    function () returns (bool) {
+    function () {
         throw;
     }
 }
