@@ -1,6 +1,6 @@
 # ReversibleDemo
 
-A non-working version of [ThisExternalAssembly](https://github.com/veox/solidity-dapps/blob/master/ThisExternalAssembly/ThisExternalAssembly.sol).
+A non-working version of [ThisExternalAssembly](https://github.com/veox/solidity-dapps/blob/master/ThisExternalAssembly/ThisExternalAssembly.solidity).
 
 `solc` wraps everything but `send()` and `call()` in protective
 `throw`s, which must be circumvented.
