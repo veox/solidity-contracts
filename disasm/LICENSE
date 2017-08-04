@@ -1,4 +1,4 @@
-*.sol are so bare that any kind of licensing is absurd.
+*.solidity are so bare that any kind of licensing is absurd.
 
 *.asm are produced by `solc` compiler, not sure what applies here.
 *.disasm are produced by Nick Johnson's `evmdis` disassembler, same
