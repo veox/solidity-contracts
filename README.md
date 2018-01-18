@@ -1,6 +1,6 @@
-# solidity-dapps
+# solidity-contracts
 
-These are my simple dapps, written in Solidity.
+Some simple Solidity contracts.
 
 
 # License
