@@ -64,6 +64,7 @@ contract ThisExternalAssembly {
 
     // will clean-up :)
     function selfDestruct() onlyOwner { selfdestruct(owner); }
-    
+
+    // fallback
     function() { throw; }
 }
